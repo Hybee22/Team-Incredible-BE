@@ -1,6 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../signup');
+// const server = require('../signup');
 
 const express = require('express');
 const app = express();
@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 app.use(express.json());
 
 const port = process.env.PORT || 7000;
-const listen = app.listen(port, () =>
+const server = app.listen(port, () =>
   console.log(`Listening on port ${port}...`)
 );
 
@@ -90,12 +90,6 @@ chai.should();
 chai.use(chaiHttp);
 
 describe('User API', () => {
-  afterEach(function () {
-    // runs after each test in this block
-    listen.close();
-  });
-
-  // TEST the POST Route
   describe('POST /api/v1/users', () => {
     it('It should create a new user in the DB', (done) => {
       const user = {
@@ -128,7 +122,7 @@ describe('User API', () => {
 
     it('It should NOT create a new user with firstName less than 3 characters in the DB', (done) => {
       const user = {
-        firstName: 'Ola',
+        firstName: 'Ol',
         lastName: 'Hybee',
         email: 'hybee.dev@gmail.com',
         phoneNumber: '09012378814',

@@ -1,5 +1,71 @@
-const functions = require('../util');
 const chai = require('chai');
+
+const validateInput = (text, notEmpty, isNumber) => {
+  // Validate user input with two pre-defined rules
+  if (!text) {
+    return false;
+  }
+  if (notEmpty && text.trim().length === 0) {
+    return false;
+  }
+  if (isNumber && +text === NaN) {
+    return false;
+  }
+  return true;
+};
+
+const validateEmail = (email, notEmpty) => {
+  if (!email) {
+    return false;
+  }
+  if (notEmpty && email.trim().length === 0) {
+    return false;
+  }
+  return true;
+};
+
+const getField = (name) => {
+  // Returns output text
+  return `${name}`;
+};
+
+const validatePassword = () => {};
+
+// const checkField =
+
+const functions = {
+  checkName: (name) => {
+    if (!validateInput(name, true, false)) {
+      return false;
+    }
+
+    return `${getField(name)}`;
+  },
+
+  checkEmail: (email) => {
+    if (!validateEmail(email, true)) {
+      return false;
+    }
+
+    return `${getField(email)}`;
+  },
+
+  checkPassword: (password) => {
+    if (!validateInput(password, true, false)) {
+      return false;
+    }
+
+    return `${getField(password)}`;
+  },
+
+  confirmPassword: (passwordConfirm) => {
+    if (!validateInput(passwordConfirm, true, false)) {
+      return false;
+    }
+
+    return `${getField(passwordConfirm)}`;
+  },
+};
 
 // Assertion Style
 chai.should();
@@ -17,7 +83,21 @@ describe('Signup Fields Tests', () => {
     done();
   });
 
-  it('it should get the email', (done) => {
+  it('it should get the phone number format 1', (done) => {
+    const phoneNumber = functions.checkName('+2348131180177');
+    phoneNumber.should.be.a('string');
+    phoneNumber.should.match(/^\+(?:[0-9] ?){6,14}[0-9]$/);
+    done();
+  });
+
+  it('it should get the phone number format 2', (done) => {
+    const phoneNumber = functions.checkName('08131180177');
+    phoneNumber.should.be.a('string');
+    phoneNumber.should.match(/^[0]\d{10}$/);
+    done();
+  });
+
+  it('it should get a valid email', (done) => {
     const email = functions.checkEmail('adefemi101@gmail.com');
     email.should.match(
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
